@@ -31,7 +31,7 @@ namespace DemoProductStore.Controllers
                      p => string.Equals(p.Category, category, StringComparison.OrdinalIgnoreCase));
              }
         //create product
-             public HttpResponseMessage PostProduct(Product item)
+             public HttpResponseMessage PostProduct(  Product item)
              {
                  item = repository.Add(item);
                  var response = Request.CreateResponse<Product>(HttpStatusCode.Created, item);

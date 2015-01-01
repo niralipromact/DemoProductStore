@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title> ProductStore App</title>
+</head>
+<body>
+    <div>
+        <h2>All Products</h2>
+        <ul id="products" />
+    </div>
+    <div>
+        <h2>Search by ID</h2>
+        <input type="text" id="prodId" size="5" />
+        <input type="button" value="Search" onclick="find();" />
+        <p id="product" />
+        
+        
+            <h2> ADD Product</h2>
+            Name :<input type="text" id="PName" /><br />
+            Category: <input type="text" id="PCat" /><br />
+            Price : <input type="number" id="PPrice" /><br />
+            <input type="button" value="Add" onclick="AddProduct();" />
+     
+        <fieldset>
+            <legend> Delete</legend>
+            ID: <input type="number" id="PId"/>      
+             <input type="button" value="Delete" onclick="DeleteProduct();" />
+            <input type="button" value="Update" onclick="UpdateProduct();" />
+        </fieldset>
+        
+    </div>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+    var uri = 'api/products';
+   
+    $(document).ready(function () {
+      // Send an AJAX request
+      $.getJSON(uri)
+          .done(function (data) {
+            // On success, 'data' contains a list of products.
+            $.each(data, function (key, item) {
+              // Add a list item for the product.
+              $('<li>', { text: formatItem(item) }).appendTo($('#products'));
+            });
+          });
+    });
+
+    function formatItem(item) {
+      return item.Name + ': $' + item.Price;
+    }
+
+    function find() {
+      var id = $('#prodId').val();
+      $.getJSON(uri+'/'+id)
+          .done(function (data) {
+            $('#product').text(formatItem(data));
+          })
+          .fail(function (jqXHR, textStatus, err) {
+            $('#product').text('Error: ' + err);
+          });
+    }
+//Add Opration
+      
+    function AddProduct()
+    {
+     
+        var newProd = {
+       
+            Name: $('#PName').val(),
+            Category: $('#PCat').val(),
+            Price :$('#PPrice').val(),
+        };
+        $.ajax({
+             data : newProd,          
+             type: "POST",
+             url:uri,
+            
+            statusCode: {
+                         //Web API Post method returns status code as 201
+                    201: function () { alert("New Product added successfully"); }
+                     }
+
+        })
+             .done(function (data) {
+                $('#products').text(formatItem(data));
+         })
+             .fail(function (jqXHR, textStatus, err) {
+                    $('#products').text('Error: ' + err);
+        });
+
+     
+    }
+        //delete
+
+    function DeleteProduct() {
+
+
+        var id = $('#PId').val();
+
+        $.ajax({
+
+            url: uri + '/' + id,
+            data: id,
+            type: "DELETE",
+
+        })
+        .done(function (data) {
+            $('#products').text(formatItem(data));
+        })
+                 .fail(function (jqXHR, textStatus, err) {
+                     $('#products').text('Error: ' + err);
+                 });
+
+
+        /*  //Update
+          function UpdateProduct() {
+              var id = $('#PId').val();
+              var name = $('#PName').val();
+              var category = $('#PCat').val();
+              var Price=$('#PPrice').val();
+             
+              };
+      
+          $.ajax({
+              
+                  
+                      
+                  type: "PUT",
+                  url: uri + '/' +id,
+                  statusCode: {
+                      //Web API PUT method returns status code as 200
+                      200: function () { alert("New Product Updated successfully"); }
+                  }
+              })
+                   .done(function (data) {
+                       $('#products').text(formatItem(data));
+                   })
+                   .fail(function (jqXHR, textStatus, err) {
+                       $('#products').text('Error: ' + err);
+                   });
+          }
+  
+      }*/
+    }
+
+    </script>
+
+
+</body>
+</html>
