@@ -13,21 +13,26 @@
         <input type="text" id="prodId" size="5" />
         <input type="button" value="Search" onclick="find();" />
         <p id="product" />
-        
+
+        <h2>Delete by Id</h2>
+        <input type="text" id="PId" />
+        <input type="button" value="Delete" onclick="DeleteProduct();" />
         
             <h2> ADD Product</h2>
+           
             Name :<input type="text" id="PName" /><br />
             Category: <input type="text" id="PCat" /><br />
             Price : <input type="number" id="PPrice" /><br />
             <input type="button" value="Add" onclick="AddProduct();" />
-     
-        <fieldset>
-            <legend> Delete</legend>
-            ID: <input type="number" id="PId"/>      
-             <input type="button" value="Delete" onclick="DeleteProduct();" />
-            <input type="button" value="Update" onclick="UpdateProduct();" />
-        </fieldset>
-        
+             
+         <h2> Update Product</h2>
+        Id :<input type="text" id="PdId" /><br />
+        Name :<input type="text" id="name" /><br />
+        Category: <input type="text" id="cat" /><br />
+        Price : <input type="number" id="price" /><br />
+         <input type="button" value="Update" onclick="UpdateProduct();" />            
+          
+           
     </div>
 
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
@@ -113,37 +118,39 @@
                  });
 
 
-        /*  //Update
-          function UpdateProduct() {
-              var id = $('#PId').val();
-              var name = $('#PName').val();
-              var category = $('#PCat').val();
-              var Price=$('#PPrice').val();
-             
-              };
-      
-          $.ajax({
-              
-                  
-                      
-                  type: "PUT",
-                  url: uri + '/' +id,
-                  statusCode: {
-                      //Web API PUT method returns status code as 200
-                      200: function () { alert("New Product Updated successfully"); }
-                  }
-              })
-                   .done(function (data) {
-                       $('#products').text(formatItem(data));
-                   })
-                   .fail(function (jqXHR, textStatus, err) {
-                       $('#products').text('Error: ' + err);
-                   });
-          }
-  
-      }*/
-    }
+        //Update
+        function UpdateProduct() {
+            id: $('#PdId').val();
+            var newprod = {
+               
+                Name: $('#name').val(''),
+                Category: $('#cat').val(''),
+                Price: $('#price').val(''),
 
+            };
+
+            $.ajax({
+
+
+                data:id + newprod,
+                type: "PUT",
+                url: uri + '/' + id,
+                statusCode: {
+                    //Web API PUT method returns status code as 200
+                    200: function () { alert("New Product Updated successfully"); }
+                }
+            })
+                     .done(function (data) {
+                         $('#products').text(formatItem(data));
+                     })
+                     .fail(function (jqXHR, textStatus, err) {
+                         $('#products').text('Error: ' + err);
+                     });
+        }
+
+
+
+    }
     </script>
 
 
